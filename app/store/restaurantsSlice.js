@@ -34,9 +34,54 @@ const restaurantsSlice = createSlice({
     restaurants: [],
     loading: false,
     error: null,
+    selectedCuisines: [],
+    selectedSuburbs: [],
+    selectedMinDiscount: 0,
+    selectedDiningType: 'Everything',
   },
   reducers: {
-    // You can add synchronous actions here if needed
+    toggleCuisine: (state, action) => {
+      const cuisine = action.payload;
+      const index = state.selectedCuisines.indexOf(cuisine);
+      if (index > -1) {
+        state.selectedCuisines.splice(index, 1);
+      } else {
+        state.selectedCuisines.push(cuisine);
+      }
+    },
+    toggleSuburb: (state, action) => {
+      const suburb = action.payload;
+      const index = state.selectedSuburbs.indexOf(suburb);
+      if (index > -1) {
+        state.selectedSuburbs.splice(index, 1);
+      } else {
+        state.selectedSuburbs.push(suburb);
+      }
+    },
+    setAllCuisines: (state, action) => {
+      state.selectedCuisines = action.payload;
+    },
+    clearAllCuisines: (state) => {
+      state.selectedCuisines = [];
+    },
+    setAllSuburbs: (state, action) => {
+      state.selectedSuburbs = action.payload;
+    },
+    clearAllSuburbs: (state) => {
+      state.selectedSuburbs = [];
+    },
+    setMinDiscount: (state, action) => {
+      state.selectedMinDiscount = action.payload;
+    },
+    setDiningType: (state, action) => {
+      state.selectedDiningType = action.payload;
+    },
+    resetFilters: (state) => {
+      state.selectedCuisines = [];
+      state.selectedSuburbs = [];
+      state.selectedMinDiscount = 0;
+      state.selectedDiningType = 'Everything';
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -47,6 +92,24 @@ const restaurantsSlice = createSlice({
       .addCase(fetchRestaurants.fulfilled, (state, action) => {
         state.loading = false;
         state.restaurants = action.payload;
+
+        // Select all cuisines by default on first load
+        if (state.selectedCuisines.length === 0) {
+          const cuisineSet = new Set();
+          action.payload.forEach(restaurant => {
+            restaurant.cuisines?.forEach(cuisine => cuisineSet.add(cuisine));
+          });
+          state.selectedCuisines = Array.from(cuisineSet);
+        }
+
+        // Select all suburbs by default on first load
+        if (state.selectedSuburbs.length === 0) {
+          const suburbSet = new Set();
+          action.payload.forEach(restaurant => {
+            if (restaurant.suburb) suburbSet.add(restaurant.suburb);
+          });
+          state.selectedSuburbs = Array.from(suburbSet);
+        }
       })
       .addCase(fetchRestaurants.rejected, (state, action) => {
         state.loading = false;
@@ -54,5 +117,17 @@ const restaurantsSlice = createSlice({
       });
   },
 });
+
+export const {
+  toggleCuisine,
+  toggleSuburb,
+  setAllCuisines,
+  clearAllCuisines,
+  setAllSuburbs,
+  clearAllSuburbs,
+  setMinDiscount,
+  setDiningType,
+  resetFilters
+} = restaurantsSlice.actions;
 
 export default restaurantsSlice.reducer;

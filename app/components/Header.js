@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ProfileMenu from './ProfileMenu';
 
-export default function Header() {
+export default function Header({ isFilterMenuOpen, setIsFilterMenuOpen }) {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
   return (
@@ -30,7 +30,10 @@ export default function Header() {
             />
           </Link>
 
-          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+          <button
+            onClick={() => setIsFilterMenuOpen(true)}
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          >
             <SlidersHorizontal className="w-6 h-6 text-gray-600" />
           </button>
         </div>

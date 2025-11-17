@@ -24,3 +24,25 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Discount slider styling */
+.discount-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: #facc15;
+  cursor: pointer;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 0.15);
+}
+
+.discount-slider::-moz-range-thumb {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: #facc15;
+  cursor: pointer;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 0.15);
+}
