@@ -6,12 +6,10 @@ import { motion } from 'framer-motion';
 import DealBadge from './DealBadge';
 
 export default function RestaurantCard({ restaurant }) {
-  // Get the best deal (highest discount)
-  const bestDeal = restaurant.deals?.reduce((best, deal) => {
-    const currentDiscount = parseInt(deal.discount);
-    const bestDiscount = parseInt(best?.discount || 0);
-    return currentDiscount > bestDiscount ? deal : best;
-  }, null);
+  // Get the top 2 deals (sorted by highest discount)
+  const topDeals = restaurant.deals
+    ? [...restaurant.deals].sort((a, b) => parseInt(b.discount) - parseInt(a.discount)).slice(0, 2)
+    : [];
 
   // Determine deal type and timing
   const getDealText = (deal) => {
@@ -34,8 +32,6 @@ export default function RestaurantCard({ restaurant }) {
     }
   };
 
-  const dealText = getDealText(bestDeal);
-
   return (
     <Link href={`/restaurant/${restaurant.objectId}`}>
       <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer h-full">
@@ -48,12 +44,16 @@ export default function RestaurantCard({ restaurant }) {
             className="w-full h-full object-cover"
             transition={{ duration: 0.4, ease: 'easeInOut' }}
           />
-          {bestDeal && (
-            <div className="absolute top-3 left-3">
-              <DealBadge
-                discount={bestDeal.discount}
-                dealText={dealText}
-              />
+          {topDeals.length > 0 && (
+            <div className="absolute top-3 left-3 flex flex-col gap-2">
+              {topDeals.map((deal, index) => (
+                <DealBadge
+                  key={index}
+                  discount={deal.discount}
+                  dealText={getDealText(deal)}
+                  lightning={deal.lightning}
+                />
+              ))}
             </div>
           )}
         </div>
