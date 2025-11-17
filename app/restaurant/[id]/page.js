@@ -71,20 +71,21 @@ export default function RestaurantDetail({ params }) {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      {/* Back Button */}
-      <div className="bg-white px-4 py-3 border-b">
-        <button
-          onClick={() => router.push('/')}
-          className="flex items-center gap-2 text-gray-700 hover:text-gray-900"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span className="font-medium">Back to restaurants</span>
-        </button>
-      </div>
+      <div className="max-w-4xl mx-auto">
+        {/* Back Button */}
+        <div className="bg-white px-4 py-3 border-b">
+          <button
+            onClick={() => router.push('/')}
+            className="flex items-center gap-2 text-gray-700 hover:text-gray-900"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-medium">Back to restaurants</span>
+          </button>
+        </div>
 
-      {/* Image Carousel */}
-      <div className="relative">
-        <div className="relative h-64 w-full">
+        {/* Image Carousel */}
+        <div className="relative">
+          <div className="relative h-64 md:h-96 w-full">
           <img
             src={restaurant.imageLink}
             alt={restaurant.name}
@@ -143,7 +144,6 @@ export default function RestaurantDetail({ params }) {
               {index < restaurant.cuisines.length - 1 && <span>•</span>}
             </span>
           ))}
-          <span className="whitespace-nowrap">• $</span>
         </div>
 
         {/* Hours */}
@@ -159,11 +159,12 @@ export default function RestaurantDetail({ params }) {
         </div>
       </div>
 
-      {/* Deals Section */}
-      <div className="px-4 pb-6">
-        {sortedDeals.map((deal) => (
-          <DealCard key={deal.objectId} deal={deal} />
-        ))}
+        {/* Deals Section */}
+        <div className="px-4 pb-6">
+          {sortedDeals.map((deal) => (
+            <DealCard key={deal.objectId} deal={deal} />
+          ))}
+        </div>
       </div>
     </div>
   );

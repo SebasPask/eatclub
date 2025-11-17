@@ -37,7 +37,7 @@ export default function RestaurantCard({ restaurant }) {
 
   return (
     <Link href={`/restaurant/${restaurant.objectId}`}>
-      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer mb-4">
+      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer h-full">
         {/* Image with deal badge overlay */}
         <div className="relative h-48 w-full">
           <img

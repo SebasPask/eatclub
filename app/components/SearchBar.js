@@ -5,7 +5,7 @@ import { Search } from 'lucide-react';
 export default function SearchBar({ value, onChange, placeholder = "e.g. chinese, pizza" }) {
   return (
     <div className="relative px-4 py-3">
-      <div className="relative">
+      <div className="relative max-w-2xl mx-auto">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
         <input
           type="text"
