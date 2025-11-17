@@ -78,7 +78,7 @@ const restaurantData = {
       "cuisines": [
         "Indian"
       ],
-      "imageLink": "https://dinnerdeal.backendless.com:443/api/e14e5098-2393-6d4a-ff80-f5564e042100/v1/files/restaurant_images/CDB2B42A-248C-EE20-FF45-8D0A8057E200_image_0_1602832133.jpg",
+      "imageLink": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0a/29/6b/c6/20160118-213732-largejpg.jpg?w=1000&h=-1&s=1",
       "open": "6:00pm",
       "close": "9:00pm",
       "deals": [
@@ -173,7 +173,7 @@ const restaurantData = {
         "Vegan",
         "SouthEast Asian"
       ],
-      "imageLink": "https://dinnerdeal.backendless.com:443/api/e14e5098-2393-6d4a-ff80-f5564e042100/v1/files/restaurant_images/178CC02C-69F5-5D90-FF67-84B135B19100_image_0_1537525540.jpg",
+      "imageLink": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/c4/de/ee/a-snapshot-of-just-a.jpg?w=1000&h=-1&s=1",
       "open": "8:00am",
       "close": "3:00pm",
       "deals": [
