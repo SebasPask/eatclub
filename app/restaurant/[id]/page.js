@@ -1,15 +1,15 @@
 'use client';
 
 import { useEffect, useMemo, use } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRestaurants } from '../../store/restaurantsSlice';
 import { ArrowLeft, BookOpen, Phone, MapPin, Heart, Clock, Star } from 'lucide-react';
+import { motion } from 'framer-motion';
 import Header from '../../components/Header';
 import DealCard from '../../components/DealCard';
 
 export default function RestaurantDetail({ params }) {
-  const router = useRouter();
   const dispatch = useDispatch();
   const { restaurants, loading, error } = useSelector((state) => state.restaurants);
 
@@ -74,22 +74,24 @@ export default function RestaurantDetail({ params }) {
       <div className="max-w-4xl mx-auto">
         {/* Back Button */}
         <div className="bg-white px-4 py-3 border-b">
-          <button
-            onClick={() => router.push('/')}
+          <Link
+            href="/"
             className="flex items-center gap-2 text-gray-700 hover:text-gray-900"
           >
             <ArrowLeft className="w-5 h-5" />
             <span className="font-medium">Back to restaurants</span>
-          </button>
+          </Link>
         </div>
 
         {/* Image Carousel */}
         <div className="relative">
           <div className="relative h-64 md:h-96 w-full">
-          <img
+          <motion.img
+            layoutId={`restaurant-image-${restaurant.objectId}`}
             src={restaurant.imageLink}
             alt={restaurant.name}
             className="w-full h-full object-cover"
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
           />
 
           {/* New Badge */}
@@ -125,8 +127,8 @@ export default function RestaurantDetail({ params }) {
             <MapPin className="w-6 h-6" />
             <span className="text-xs">Location</span>
           </button>
-          <button className="flex flex-col items-center gap-2 text-gray-600">
-            <Heart className="w-6 h-6" />
+          <button className="flex flex-col items-center gap-2 text-gray-600 group">
+            <Heart className="w-6 h-6 group-hover:text-red-500 group-hover:fill-red-500 transition-colors" />
             <span className="text-xs">Favourite</span>
           </button>
         </div>

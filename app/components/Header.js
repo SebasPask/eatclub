@@ -2,6 +2,7 @@
 
 import { User, SlidersHorizontal } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Header() {
   return (
@@ -11,7 +12,7 @@ export default function Header() {
           <User className="w-6 h-6 text-gray-600" />
         </button>
 
-        <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <Image
             src="/logo.svg"
             alt="EatClub Logo"
@@ -19,7 +20,7 @@ export default function Header() {
             height={48}
             priority
           />
-        </div>
+        </Link>
 
         <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
           <SlidersHorizontal className="w-6 h-6 text-gray-600" />

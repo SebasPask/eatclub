@@ -2,6 +2,7 @@
 
 import { Heart } from 'lucide-react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import DealBadge from './DealBadge';
 
 export default function RestaurantCard({ restaurant }) {
@@ -40,10 +41,12 @@ export default function RestaurantCard({ restaurant }) {
       <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer h-full">
         {/* Image with deal badge overlay */}
         <div className="relative h-48 w-full">
-          <img
+          <motion.img
+            layoutId={`restaurant-image-${restaurant.objectId}`}
             src={restaurant.imageLink}
             alt={restaurant.name}
             className="w-full h-full object-cover"
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
           />
           {bestDeal && (
             <div className="absolute top-3 left-3">
@@ -59,8 +62,8 @@ export default function RestaurantCard({ restaurant }) {
         <div className="p-4">
           <div className="flex items-start justify-between mb-2">
             <h3 className="text-xl font-bold text-gray-900">{restaurant.name}</h3>
-            <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
-              <Heart className="w-6 h-6 text-gray-400" />
+            <button className="p-1 hover:bg-gray-100 rounded-full transition-colors group">
+              <Heart className="w-6 h-6 text-gray-400 group-hover:text-red-500 group-hover:fill-red-500 transition-colors" />
             </button>
           </div>
 
