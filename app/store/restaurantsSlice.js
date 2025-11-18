@@ -2,11 +2,15 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const API_ENDPOINT = '/api/local-restaurants';
 
-// Async thunk to fetch restaurants
+/**
+ * Async thunk to fetch restaurant data from API
+ * Implements caching: only fetches if store is empty to avoid redundant calls
+ * @returns {Array} Array of restaurant objects with deals
+ */
 export const fetchRestaurants = createAsyncThunk(
   'restaurants/fetchRestaurants',
   async (_, { getState }) => {
-    // Check if we already have data - don't fetch again
+    // Check if we already have data - don't fetch again (caching strategy)
     const { restaurants } = getState().restaurants;
     if (restaurants.length > 0) {
       return restaurants;
@@ -40,22 +44,24 @@ const restaurantsSlice = createSlice({
     selectedDiningType: 'Everything',
   },
   reducers: {
+    // Toggle a cuisine filter on/off (add if not present, remove if present)
     toggleCuisine: (state, action) => {
       const cuisine = action.payload;
       const index = state.selectedCuisines.indexOf(cuisine);
       if (index > -1) {
-        state.selectedCuisines.splice(index, 1);
+        state.selectedCuisines.splice(index, 1); // Remove if already selected
       } else {
-        state.selectedCuisines.push(cuisine);
+        state.selectedCuisines.push(cuisine); // Add if not selected
       }
     },
+    // Toggle a suburb filter on/off (add if not present, remove if present)
     toggleSuburb: (state, action) => {
       const suburb = action.payload;
       const index = state.selectedSuburbs.indexOf(suburb);
       if (index > -1) {
-        state.selectedSuburbs.splice(index, 1);
+        state.selectedSuburbs.splice(index, 1); // Remove if already selected
       } else {
-        state.selectedSuburbs.push(suburb);
+        state.selectedSuburbs.push(suburb); // Add if not selected
       }
     },
     setAllCuisines: (state, action) => {
@@ -93,7 +99,11 @@ const restaurantsSlice = createSlice({
         state.loading = false;
         state.restaurants = action.payload;
 
-        // Select all cuisines by default on first load
+        /**
+         * Auto-select all cuisines on initial load
+         * Creates a Set to get unique cuisines from all restaurants
+         * Only runs if no cuisines are currently selected (first load)
+         */
         if (state.selectedCuisines.length === 0) {
           const cuisineSet = new Set();
           action.payload.forEach(restaurant => {
@@ -102,7 +112,11 @@ const restaurantsSlice = createSlice({
           state.selectedCuisines = Array.from(cuisineSet);
         }
 
-        // Select all suburbs by default on first load
+        /**
+         * Auto-select all suburbs on initial load
+         * Creates a Set to get unique suburbs from all restaurants
+         * Only runs if no suburbs are currently selected (first load)
+         */
         if (state.selectedSuburbs.length === 0) {
           const suburbSet = new Set();
           action.payload.forEach(restaurant => {

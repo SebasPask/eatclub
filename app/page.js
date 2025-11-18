@@ -19,11 +19,16 @@ export default function Home() {
     dispatch(fetchRestaurants());
   }, [dispatch]);
 
-  // Filter and sort restaurants
+  /**
+   * Filter and sort restaurants based on multiple criteria
+   * Filters are applied sequentially: search query → cuisines → suburbs → discount → dining type
+   * Finally sorts by best deal (highest discount first)
+   * Memoized to prevent unnecessary recalculations
+   */
   const filteredRestaurants = useMemo(() => {
     let filtered = restaurants;
 
-    // Filter by search query (name or cuisines)
+    // Filter by search query (searches both restaurant name and cuisines)
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(restaurant => {

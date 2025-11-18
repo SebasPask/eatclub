@@ -172,20 +172,34 @@ export default function FilterMenu({ isOpen, onClose }) {
 
               {/* Tabs */}
               <div className="flex border-b border-gray-200">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`flex-1 px-4 py-3 text-sm font-medium transition-colors relative ${
-                      activeTab === tab ? 'text-gray-900' : 'text-gray-400'
-                    }`}
-                  >
-                    {tab}
-                    {activeTab === tab && (
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
-                    )}
-                  </button>
-                ))}
+                {tabs.map((tab) => {
+                  // Determine if tab has active filters
+                  const hasActiveFilter =
+                    (tab === 'General' && selectedDiningType !== 'Everything') ||
+                    (tab === 'Discount' && selectedMinDiscount > 0) ||
+                    (tab === 'Cuisine' && selectedCuisines.length < cuisines.length) ||
+                    (tab === 'Suburbs' && selectedSuburbs.length < suburbs.length);
+
+                  return (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`flex-1 px-4 py-3 text-sm font-medium transition-colors relative ${
+                        activeTab === tab ? 'text-gray-900' : 'text-gray-400'
+                      }`}
+                    >
+                      <span className="relative">
+                        {tab}
+                        {hasActiveFilter && (
+                          <span className="absolute -top-1 -right-2 w-2 h-2 bg-red-500 rounded-full" />
+                        )}
+                      </span>
+                      {activeTab === tab && (
+                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -200,7 +214,7 @@ export default function FilterMenu({ isOpen, onClose }) {
                       <button
                         onClick={() => dispatch(setDiningType('Everything'))}
                         className={`w-full flex items-center gap-4 p-4 rounded-lg transition-colors ${
-                          selectedDiningType === 'Everything' ? 'bg-yellow-100 border-2 border-yellow-400' : 'bg-gray-50 hover:bg-gray-100'
+                          selectedDiningType === 'Everything' ? 'bg-gray-50 border-2 border-gray-900' : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
                         }`}
                       >
                         <Utensils className="w-6 h-6 text-gray-600" />
@@ -209,7 +223,7 @@ export default function FilterMenu({ isOpen, onClose }) {
                       <button
                         onClick={() => dispatch(setDiningType('Dine-in'))}
                         className={`w-full flex items-center gap-4 p-4 rounded-lg transition-colors ${
-                          selectedDiningType === 'Dine-in' ? 'bg-yellow-100 border-2 border-yellow-400' : 'bg-gray-50 hover:bg-gray-100'
+                          selectedDiningType === 'Dine-in' ? 'bg-gray-50 border-2 border-gray-900' : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
                         }`}
                       >
                         <Coffee className="w-6 h-6 text-gray-600" />
@@ -218,7 +232,7 @@ export default function FilterMenu({ isOpen, onClose }) {
                       <button
                         onClick={() => dispatch(setDiningType('Takeaway'))}
                         className={`w-full flex items-center gap-4 p-4 rounded-lg transition-colors ${
-                          selectedDiningType === 'Takeaway' ? 'bg-yellow-100 border-2 border-yellow-400' : 'bg-gray-50 hover:bg-gray-100'
+                          selectedDiningType === 'Takeaway' ? 'bg-gray-50 border-2 border-gray-900' : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
                         }`}
                       >
                         <ShoppingBag className="w-6 h-6 text-gray-600" />
@@ -227,7 +241,7 @@ export default function FilterMenu({ isOpen, onClose }) {
                       <button
                         onClick={() => dispatch(setDiningType('Drinks'))}
                         className={`w-full flex items-center gap-4 p-4 rounded-lg transition-colors ${
-                          selectedDiningType === 'Drinks' ? 'bg-yellow-100 border-2 border-yellow-400' : 'bg-gray-50 hover:bg-gray-100'
+                          selectedDiningType === 'Drinks' ? 'bg-gray-50 border-2 border-gray-900' : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
                         }`}
                       >
                         <Wine className="w-6 h-6 text-gray-600" />
@@ -236,7 +250,7 @@ export default function FilterMenu({ isOpen, onClose }) {
                       <button
                         onClick={() => dispatch(setDiningType('Venue of the Week'))}
                         className={`w-full flex items-center gap-4 p-4 rounded-lg transition-colors ${
-                          selectedDiningType === 'Venue of the Week' ? 'bg-yellow-100 border-2 border-yellow-400' : 'bg-gray-50 hover:bg-gray-100'
+                          selectedDiningType === 'Venue of the Week' ? 'bg-gray-50 border-2 border-gray-900' : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
                         }`}
                       >
                         <div className="w-6 h-6 bg-yellow-200 rounded-md flex items-center justify-center">
@@ -257,13 +271,17 @@ export default function FilterMenu({ isOpen, onClose }) {
                       <button
                         onClick={() => setLiveNow(!liveNow)}
                         className={`w-14 h-8 rounded-full relative transition-colors ${
-                          liveNow ? 'bg-yellow-400' : 'bg-gray-300'
+                          liveNow ? 'bg-gray-900' : 'bg-gray-300'
                         }`}
                       >
                         <div className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-sm flex items-center justify-center transition-all ${
                           liveNow ? 'right-1' : 'left-1'
                         }`}>
-                          {liveNow && <span className="text-xs">✓</span>}
+                          {liveNow ? (
+                            <span className="text-xs">✓</span>
+                          ) : (
+                            <X className="w-3 h-3 text-gray-600" />
+                          )}
                         </div>
                       </button>
                     </div>
@@ -323,13 +341,17 @@ export default function FilterMenu({ isOpen, onClose }) {
                     <button
                       onClick={handleShowAllCuisines}
                       className={`w-14 h-8 rounded-full relative transition-colors ${
-                        selectedCuisines.length === cuisines.length ? 'bg-yellow-400' : 'bg-gray-300'
+                        selectedCuisines.length === cuisines.length ? 'bg-gray-900' : 'bg-gray-300'
                       }`}
                     >
                       <div className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-sm flex items-center justify-center transition-all ${
                         selectedCuisines.length === cuisines.length ? 'right-1' : 'left-1'
                       }`}>
-                        {selectedCuisines.length === cuisines.length && <span className="text-xs">✓</span>}
+                        {selectedCuisines.length === cuisines.length ? (
+                          <span className="text-xs">✓</span>
+                        ) : (
+                          <X className="w-3 h-3 text-gray-600" />
+                        )}
                       </div>
                     </button>
                   </div>
@@ -346,13 +368,17 @@ export default function FilterMenu({ isOpen, onClose }) {
                         <button
                           onClick={() => dispatch(toggleCuisine(cuisine))}
                           className={`w-14 h-8 rounded-full relative transition-colors ${
-                            isSelected ? 'bg-yellow-400' : 'bg-gray-300'
+                            isSelected ? 'bg-gray-900' : 'bg-gray-300'
                           }`}
                         >
                           <div className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-sm flex items-center justify-center transition-all ${
                             isSelected ? 'right-1' : 'left-1'
                           }`}>
-                            {isSelected && <span className="text-xs">✓</span>}
+                            {isSelected ? (
+                              <span className="text-xs">✓</span>
+                            ) : (
+                              <X className="w-3 h-3 text-gray-600" />
+                            )}
                           </div>
                         </button>
                       </div>
@@ -379,13 +405,17 @@ export default function FilterMenu({ isOpen, onClose }) {
                     <button
                       onClick={handleShowAllSuburbs}
                       className={`w-14 h-8 rounded-full relative transition-colors ${
-                        selectedSuburbs.length === suburbs.length ? 'bg-yellow-400' : 'bg-gray-300'
+                        selectedSuburbs.length === suburbs.length ? 'bg-gray-900' : 'bg-gray-300'
                       }`}
                     >
                       <div className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-sm flex items-center justify-center transition-all ${
                         selectedSuburbs.length === suburbs.length ? 'right-1' : 'left-1'
                       }`}>
-                        {selectedSuburbs.length === suburbs.length && <span className="text-xs">✓</span>}
+                        {selectedSuburbs.length === suburbs.length ? (
+                          <span className="text-xs">✓</span>
+                        ) : (
+                          <X className="w-3 h-3 text-gray-600" />
+                        )}
                       </div>
                     </button>
                   </div>
@@ -399,13 +429,17 @@ export default function FilterMenu({ isOpen, onClose }) {
                         <button
                           onClick={() => dispatch(toggleSuburb(suburb))}
                           className={`w-14 h-8 rounded-full relative transition-colors ${
-                            isSelected ? 'bg-yellow-400' : 'bg-gray-300'
+                            isSelected ? 'bg-gray-900' : 'bg-gray-300'
                           }`}
                         >
                           <div className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-sm flex items-center justify-center transition-all ${
                             isSelected ? 'right-1' : 'left-1'
                           }`}>
-                            {isSelected && <span className="text-xs">✓</span>}
+                            {isSelected ? (
+                              <span className="text-xs">✓</span>
+                            ) : (
+                              <X className="w-3 h-3 text-gray-600" />
+                            )}
                           </div>
                         </button>
                       </div>

@@ -6,12 +6,21 @@ import { motion } from 'framer-motion';
 import DealBadge from './DealBadge';
 
 export default function RestaurantCard({ restaurant }) {
-  // Get the top 2 deals (sorted by highest discount)
+  /**
+   * Get top 2 deals for this restaurant
+   * Creates a copy of the deals array (to avoid mutating props), sorts by discount, and takes first 2
+   * This allows displaying both primary and secondary deals on the card
+   */
   const topDeals = restaurant.deals
     ? [...restaurant.deals].sort((a, b) => parseInt(b.discount) - parseInt(a.discount)).slice(0, 2)
     : [];
 
-  // Determine deal type and timing
+  /**
+   * Generate descriptive text for a deal based on its properties
+   * Combines deal type (Dine In) with timing information if available
+   * @param {Object} deal - Deal object containing discount, timing, and type information
+   * @returns {string} Formatted deal text (e.g., "Dine In - Arrive before 9:00pm")
+   */
   const getDealText = (deal) => {
     if (!deal) return '';
 
