@@ -83,8 +83,20 @@ const restaurantsSlice = createSlice({
       state.selectedDiningType = action.payload;
     },
     resetFilters: (state) => {
-      state.selectedCuisines = [];
-      state.selectedSuburbs = [];
+      // Reset to all cuisines selected
+      const cuisineSet = new Set();
+      state.restaurants.forEach(restaurant => {
+        restaurant.cuisines?.forEach(cuisine => cuisineSet.add(cuisine));
+      });
+      state.selectedCuisines = Array.from(cuisineSet);
+
+      // Reset to all suburbs selected
+      const suburbSet = new Set();
+      state.restaurants.forEach(restaurant => {
+        if (restaurant.suburb) suburbSet.add(restaurant.suburb);
+      });
+      state.selectedSuburbs = Array.from(suburbSet);
+
       state.selectedMinDiscount = 0;
       state.selectedDiningType = 'Everything';
     },
